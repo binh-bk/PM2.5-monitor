@@ -14,9 +14,10 @@
 #include <pms.h>
 #include "SSD1306.h"
 
-#define wifi_ssid "wifi_ssid"
-#define wifi_password "password"
+#define wifi_ssid "your_wifi"
+#define wifi_password "wifi_password"
 #define DATE "v2.Sep30"
+#define BST_PIN D7 //BOOST PIN to turn on 5V boost
 
 // for NTP time
 const char* ntpServer = "pool.ntp.org";
@@ -37,17 +38,31 @@ uint32_t uptime;
 uint16_t bat_adc;
 float bat;
 char hm[7];
-String ip;  // to trace back your device
+
 
 /*______________        _ START SETUP _        _______________*/
 void setup() {
   Serial.begin(115200);
   Serial.println("\nStarting");
+  pinMode(BST_PIN, OUTPUT);
+  digitalWrite(BST_PIN, LOW);
+  Serial.println("Turn on 5V boost");
+  delay(1000); // pull low for 500 to 2000 to turn on
+  digitalWrite(BST_PIN, HIGH);
+  delay(2000); // wait for boost online
+  pinMode(A0, INPUT);
+  
   Wire.begin(5,4); 
   oled.init(); 
   oled.flipScreenVertically();
   oled.setBrightness(100);
-  pinMode(A0, INPUT);
+  oled.setColor(WHITE);
+  oled.drawRect(0,0,128,32);
+  oled.setFont(ArialMT_Plain_10);
+  oled.drawString(24,1, "version");
+  oled.drawString(24, 16, DATE);
+  oled.display();
+  
 
   setup_wifi();
   timeClient.begin();
@@ -110,14 +125,12 @@ void read_pms() {
 /*__________     DISPLAY TEXT     _________*/
 void display_data(String input){
   oled.clear();
-  oled.setColor(WHITE);
   oled.drawRect(0,0,128,32);
   oled.setFont(ArialMT_Plain_10);
   oled.setTextAlignment(TEXT_ALIGN_CENTER);
   oled.drawString(64, 0, String(input));
   oled.setFont(ArialMT_Plain_10);
-  oled.drawString(24, 16, DATE);
-  oled.drawString(90, 16, ip);
+  
   oled.display();
 }
 
@@ -131,11 +144,11 @@ void display_main(){
   oled.drawString(127, 16, String(bat) + "v");
   
   oled.setTextAlignment(TEXT_ALIGN_LEFT);
-  oled.drawString(1, 0, "  ug/m3  ");
-  oled.setFont(ArialMT_Plain_16);
+  oled.drawString(1, 0, "ug/m3");
+  oled.setFont(ArialMT_Plain_24);
   
 //  String pm = "PM2.5 " + String(pm2_5_ac);
-  oled.drawString(10, 15, String(pm2_5_ac));
+  oled.drawString(35, 0, String(pm2_5_ac));
   oled.display();
 }
 
@@ -156,16 +169,30 @@ void setup_wifi() {
       WiFi.begin(wifi_ssid, wifi_password);
       delay(3000);
     }
+    String tmp = "Connecting..." + String(i);
+    display_data(tmp);
     if (i >=10){
-      ESP.restart();
-      Serial.println("Resetting ESP");
+      break;  // break out the while loop
+//      ESP.restart();
+//      Serial.println("Resetting ESP");
+    
     }
   }
-  ip = WiFi.localIP().toString();
-  Serial.printf("\nWiFi connected:\t");
-  Serial.print(ip);
-  Serial.printf("\tMAC: %s\n", WiFi.macAddress().c_str()); 
-  display_data(ip);
+  String ip;
+  if (WiFi.status() == WL_CONNECTED){
+    ip = WiFi.localIP().toString();
+    ip = "Connected: \n" + ip;
+    display_data(ip);
+    Serial.printf("\nWiFi connected:\t");
+    Serial.print(ip);
+    Serial.printf("\tMAC: %s\n", WiFi.macAddress().c_str()); 
+    
+  } else {
+    ip = "No internet connection\nNTP time not available";
+    display_data(ip);
+  }
+
+  
 }
 
 /*__________   getTime  ___________*/
