@@ -1,6 +1,10 @@
 # PM2.5-monitor
 Build air quality monitor of PM2.5 (fine particles) with low-cost sensor and ESP32/ESP8266
 
+<p align="center">
+  <img src="img/pm25.gif"/>
+</p>
+
 ## v1. Easy - peasy
 ### Schematics:
 <p align="center">
