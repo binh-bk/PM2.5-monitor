@@ -31,7 +31,7 @@ SSD1306  oled(0x3c, D2, D1);
 
 WiFiClient espClient;
 
-uint16_t INVL = 10; // sample every minute
+uint16_t INVL = 10; // update every 10 seconds
 uint8_t pm2_5_ac,pm10_ac;
 int32_t lastSampling = 0;
 uint32_t uptime;
