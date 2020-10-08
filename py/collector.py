@@ -7,8 +7,7 @@ import json
 import os
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
-import numpy as np
-import math
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 logFile = os.path.join(basedir, 'logs', '{}.log'.format(__file__))
