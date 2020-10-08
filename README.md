@@ -24,9 +24,12 @@ Build air quality monitor of PM2.5 (fine particles) with low-cost sensor and ESP
 
 ## v1.1 Logging data via MQTT
 
-### Publish data to open MQTT server - HiveMQ.com
+### Publish data to open MQTT server - [HiveMQ.com](https://b-io.info/tutorials/pm25-monitor/4/)
 
 ### Publish data to a home MQTT server
-- Capture data by a Python script
-- Convert data in a list of dictionary to a CSV file
+- Capture data by a [Python script](https://github.com/binh-bk/PM2.5-monitor/blob/master/py/collector.py)
+- Convert data in a [list of dictionary to a CSV file](https://github.com/binh-bk/PM2.5-monitor/blob/master/py/convert2csv.py)
+
+### Tutorials:
+See it on my personal website [b-io.info](https://b-io.info/tutorials/pm25-monitor/)
 
