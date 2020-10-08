@@ -12,7 +12,7 @@ import paho.mqtt.publish as publish
 basedir = os.path.abspath(os.path.dirname(__file__))
 logFile = os.path.join(basedir, 'logs', '{}.log'.format(__file__))
 
-# DATABASE
+# AUTHENTICATION FOR MQTT SERVER
 auth = {
     'topic': "sensors/pms7003",
     'password': 'mqtt_password',
@@ -25,10 +25,8 @@ def to_timestamp():
     
 start_time = to_timestamp()  # mark the timestamp for recording
 
-# SHORTCUTS
-
 def host_folder():
-    '''designate a folder for each money, create one if none existed'''
+    '''designate a folder for each month, create one if none existed'''
     this_month_folder = time.strftime('%b%Y')
     all_dirs = [d for d in os.listdir(basedir) if os.path.isdir(os.path.join(basedir,d))]
     if len(all_dirs) == 0 or this_month_folder not in all_dirs:
@@ -38,6 +36,7 @@ def host_folder():
     
 
 def takeTime():
+    '''add timestampe for each entry'''
     return time.strftime("%Y-%m-%d %H:%M:%S")
 
 def get_logfile(payload):
@@ -48,6 +47,7 @@ def get_logfile(payload):
     return file
 
 def record(payload):
+    '''write payload to a designated file'''
     record_file = get_logfile(payload)    
     with open(record_file, 'a+') as f:
         f.write(json.dumps(payload))
@@ -63,6 +63,7 @@ def on_connect(client, userdata, flags, rc):
 
 
 def on_message(client, userdata, msg):
+    ''' main function'''
     # try:
     # topic = msg.topic
     payload = msg.payload.decode('UTF-8').lower().strip() 
