@@ -22,3 +22,11 @@ Build air quality monitor of PM2.5 (fine particles) with low-cost sensor and ESP
 3. Lithium battery protection + boost-up board (5V)  
 4. OLED display  
 
+## v1.1 Logging data via MQTT
+
+### Publish data to open MQTT server - HiveMQ.com
+
+### Publish data to a home MQTT server
+- Capture data by a Python script
+- Convert data in a list of dictionary to a CSV file
+
