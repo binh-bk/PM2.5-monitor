@@ -31,5 +31,5 @@ Build air quality monitor of PM2.5 (fine particles) with low-cost sensor and ESP
 - Convert data in a [list of dictionary to a CSV file](https://github.com/binh-bk/PM2.5-monitor/blob/master/py/convert2csv.py)
 
 ### Tutorials:
-See it on my personal website [b-io.info](https://b-io.info/tutorials/pm25-monitor/)
+See it on my personal website [b-io.info](https://www.b-io.info/post/tutorial/pm25-monitor/)
 
